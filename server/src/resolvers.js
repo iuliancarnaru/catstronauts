@@ -1,27 +1,49 @@
 export const resolvers = {
   Query: {
     // get all tracks, will be used to populate the homepage grid of our web client
-    tracksForHome: (parent, args, context, info) => {
-      return context.dataSources.trackAPI.getTracksForHome();
+    tracksForHome: (parent, args, { dataSources }, info) => {
+      return dataSources.trackAPI.getTracksForHome();
     },
 
     // get a single track by id, for the Track page
-    track: (parent, args, { dataSources }, info) => {
-      return dataSources.trackAPI.getTrack(args.id);
+    track: (parent, { id }, { dataSources }, info) => {
+      return dataSources.trackAPI.getTrack(id);
     },
 
-    module: (parent, args, { dataSources }, info) => {
-      return dataSources.trackAPI.getModule(args.id);
+    module: (parent, { id }, { dataSources }, info) => {
+      return dataSources.trackAPI.getModule(id);
     },
   },
+
+  Mutation: {
+    incrementTrackViews: async (parent, { id }, { dataSources }, info) => {
+      try {
+        const track = await dataSources.trackAPI.incrementTrackViews(id);
+        return {
+          code: 200,
+          success: true,
+          message: `Successfully incremented number of views for track ${id}`,
+          track,
+        };
+      } catch (err) {
+        return {
+          code: err.extensions.response.status,
+          success: false,
+          message: err.extensions.response.body,
+          track: null,
+        };
+      }
+    },
+  },
+
   Track: {
-    author: (parent, args, { dataSources }, info) => {
-      return dataSources.trackAPI.getAuthor(parent.authorId);
+    author: ({ authorId }, args, { dataSources }, info) => {
+      return dataSources.trackAPI.getAuthor(authorId);
     },
 
     // resolver chains
-    modules: (parent, args, { dataSources }, info) => {
-      return dataSources.trackAPI.getTrackModules(parent.id);
+    modules: ({ id }, args, { dataSources }, info) => {
+      return dataSources.trackAPI.getTrackModules(id);
     },
   },
 };
