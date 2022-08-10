@@ -9,6 +9,10 @@ export const resolvers = {
     track: (parent, args, { dataSources }, info) => {
       return dataSources.trackAPI.getTrack(args.id);
     },
+
+    module: (parent, args, { dataSources }, info) => {
+      return dataSources.trackAPI.getModule(args.id);
+    },
   },
   Track: {
     author: (parent, args, { dataSources }, info) => {
