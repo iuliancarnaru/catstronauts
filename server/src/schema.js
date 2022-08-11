@@ -29,7 +29,8 @@ const typeDefs = gql`
     title: String!
     author: Author!
     thumbnail: String
-    length: Int
+    length: Int @deprecated(reason: "Use durationInSeconds")
+    durationInSeconds: Int
     modulesCount: Int
     description: String
     numberOfViews: Int
@@ -39,7 +40,8 @@ const typeDefs = gql`
   type Module {
     id: ID!
     title: String!
-    length: Int
+    length: Int @deprecated(reason: "Use durationInSeconds")
+    durationInSeconds: Int
     videoUrl: String
     content: String
   }

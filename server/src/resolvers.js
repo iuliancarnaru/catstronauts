@@ -45,5 +45,13 @@ export const resolvers = {
     modules: ({ id }, args, { dataSources }, info) => {
       return dataSources.trackAPI.getTrackModules(id);
     },
+
+    // taking care of new filed in Track
+    durationInSeconds: ({ length }) => length
   },
+
+  Module: {
+    // taking care of new filed in Module
+    durationInSeconds: ({ length }) => length
+  }
 };
